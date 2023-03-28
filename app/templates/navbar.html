@@ -1,0 +1,48 @@
+<nav class="x-navbar navbar navbar-expand-lg navbar-dark px-3">
+    <div class="container-fluid">
+        <a class="navbar-brand mx-auto" href="/">Next Juegos</a>
+        <ul class="navbar-nav">
+            <li class="nav-item">
+                <form class="d-flex" method="GET" action="/search/" id="search-form">
+                    <input class="form-control me-2" type="search" placeholder="Buscar" aria-label="Search" name="term" style="width: 500px;" id="search-input">
+                </form> 
+                <script>
+                    var form = document.getElementById('search-form');
+                    var input = document.getElementById('search-input');
+                    
+                    form.addEventListener('submit', function(event) {
+                        event.preventDefault();
+                        
+                        var term = encodeURIComponent(input.value);
+                        var action = '/search/' + term;
+                        
+                        form.setAttribute('action', action);
+                        form.submit();
+                    });
+                </script>
+            </li>
+        </ul>
+        
+        <ul class="navbar-nav">
+            
+            <li class="nav-item dropdown">
+                <div class="dropdown">
+                    <button class="btn btn-danger">Perfil</button>
+                    <div class="dropdown-content">
+                        {% if 'user_id' in session %}
+                        <form action="/logout" method="POST">
+                            <button class="btn btn-link text-dark">Salir</button>
+                        </form>
+                        {%else%}
+                        <a href="/acceder" class="text-dark">Acceder</a>
+                        <a href="/registrar" class="text-dark">Registrarte</a>
+                        
+                        {%endif%}
+                    </div>
+                </div>
+            </li>
+        </ul>
+
+
+    </div>
+</nav>

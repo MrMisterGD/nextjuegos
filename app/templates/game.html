@@ -1,0 +1,96 @@
+{% extends "base.html" %} 
+
+{% block content %}
+<div class="row text-white">
+  {%if game_info%}
+  <div class="col-4">
+    <h3 class="invented-class">{{game_info.name}}</h3>
+    <img src="{{game_info.image}}" alt="{{game_info.name}}" class="rounded" style="width:190px">
+    <form method="post" action="/vote/{{game_info.name}}">
+    <div>
+    <button class="btn btn-dark fa fa-star" name="star" value="1" style="margin-top: 10px;"></button>
+    <button class="btn btn-dark fa fa-star" name="star" value="2" style="margin-top: 10px;"></button>
+    <button class="btn btn-dark fa fa-star" name="star" value="3" style="margin-top: 10px;"></button>
+    <button class="btn btn-dark fa fa-star" name="star" value="4" style="margin-top: 10px;"></button> 
+    <button class="btn btn-dark fa fa-star" name="star" value="5" style="margin-top: 10px;"></button>
+
+    <p class="invented-class">{{ average_review }}</p>
+
+    </div>
+    </form>
+    {% for price in price_info %}
+    <table class="table table-borderless text-white">
+      <thead>
+        <tr>
+          <th>
+            {%if price.shop_name == 'epicgames'%}
+            <img src="{{ url_for('static', filename='img/epicgames.png') }}" alt="Epic Games logo" class="rounded" style="width:30px; height:30px;">
+            {%elif price.shop_name == 'steam'%}
+            <img src="{{ url_for('static', filename='img/steam.png') }}" alt="Steam logo" class="rounded" style="width:30px; height:30px;">
+            {%elif price.shop_name == 'gog'%}
+            <img src="{{ url_for('static', filename='img/gog.png') }}" alt="GOG logo" class="rounded" style="width:30px; height:30px;">
+            {%elif price.shop_name == 'humblebundle'%}
+            <img src="{{ url_for('static', filename='img/humblebundle.png') }}" alt="Humble Bundle logo" class="rounded" style="width:30px; height:30px;">
+            {%endif%}
+            <p class="invented-class">{{price.shop_name}}</p>
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          {% if price.discount|int > 0 %}
+          <td style="background-color: rgba(34, 61, 34, 0.5);"><del>${{price.price}}</del><span style="padding-right: 5px; padding-left: 5px;"> | </span><span style="background-color: rgba(44, 197, 44, 0.5);">{{price.discount}}% <br>${{price.price|int - price.price|int * price.discount|int // 100}}</span></td>
+          {% else %}
+          <td style="background-color: rgba(34, 61, 34, 0.5);">${{price.price}}</td>
+          {%endif%}  
+        </tr>
+      </tbody>
+    </table>
+    {% endfor %}
+  </div>
+  <!--
+    <div class="col-4">
+      <p class="bg-white" style="padding-left: 10px;">{{game_info.description}}</p>
+      <table class="table table-borderless">
+        <thead>
+          <tr>
+            <th>Requisitos mínimos</th>
+            <th>Requisitos máximos</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>{{game_info.req_min}}</td>
+            <td>{{game_info.req_max}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  -->
+  <div class="col-md-4 ml-auto">
+    <h3 class="list-group-item list-group-item-dark text-light" style="background-color: rgba(0, 0, 0, 0.5); border: solid; border-color: black;">Mejores ofertas</h3>
+    <ul>
+      {%for game in random_prices%}
+      <li class="list-group-item list-group-item-action" style="background-color: rgba(37, 42, 63, 0.5); border: solid; border-color: black;">
+        <a href="/juego/{{game.name}}" class="text-light">{{game.name}}</a>
+      </li>
+      {%endfor%}
+    </ul>
+  </div>
+  {%else%}
+  
+  <h3>Lo siento, este juego no existe o ha sido borrado</h3>
+  
+  <div class="col-md-4 ml-auto invented-class">
+    <h3 class="list-group-item list-group-item-dark text-light" style="background-color: rgba(76, 88, 139, 0.5);">Mejores ofertas</h3>
+    <ul>
+      {%for game in random_prices%}
+      <li class="list-group-item list-group-item-action" style="background-color: rgba(76, 88, 139, 0.5);">
+        <a href="/juego/{{game.name}}" class="text-light">{{game.name}}</a>
+      </li>
+      {%endfor%}
+    </ul>
+  </div>
+  {%endif%}
+</div>
+{% endblock %}

@@ -1,0 +1,28 @@
+{% extends "base.html" %} 
+
+{% block content %}
+<div class="container mt-5">
+  <div class="row justify-content-center align-items-center">
+    <div class="col-4 border border-secondary border-2 text-light invented-class">
+      <h3 class="text-center text-white">Bienvenid@ a Next Juegos</h3>
+      <p class="text-center text-light">Ingresa a tu cuenta</p>
+      <form action="/login" method="POST">
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+        <ul class="messages">
+          {% for message in messages %}
+          <li>{{ message }}</li>
+          {% endfor %}
+        </ul>
+        {% endif %}
+        {% endwith %}
+        <label for="email">Email:</label>
+        <input type="text" name="email" class="form-control" style="width: 250px; margin-bottom: 10px">
+        <label for="password">Contraseña:</label>
+        <input type="password" required name="password" class="form-control" style="width: 250px; margin-bottom: 10px">
+        <button type="submit" class="btn btn-danger mb-2">Entrar</button>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}
